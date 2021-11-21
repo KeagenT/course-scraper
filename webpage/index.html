@@ -19,20 +19,60 @@
 
     <script>
         async function loadData() {
+            //Load data
             let data = await getData();
             console.log(data);
 
+            //Basic html stuff
             var field = document.getElementById("field");
             var courseID = document.getElementById("courseID");
             var courseName = document.getElementById("courseName");
             var courseDesc = document.getElementById("courseDesc");
 
-            let input = field.value;
+            //Build name to index dict
+            var nameToIndex = {}
+            let i = 0;
+            for (let course of data) {
+                nameToIndex[course["ID"]] = i;
+                i++;
+            }
+
+            //TODO: implement typeahead
+            let index = nameToIndex[field.value];
             field.value = "";
 
-            courseID.innerHTML = "ID: " + data[input]["ID"];
-            courseName.innerHTML = "NAME: " + data[input]["Name"];
-            courseDesc.innerHTML = "DESCRIPTION: " + data[input]["Description"]
+            courseID.innerHTML = "ID: " + data[index]["ID"];
+            courseName.innerHTML = "NAME: " + data[index]["Name"];
+            courseDesc.innerHTML = "DESCRIPTION: " + data[index]["Description"]
+
+            //Convert data to tree data for visualization
+            var treeData = {
+                "name": data[index]["ID"],
+                "parent": "null",
+                "children": []
+            };
+            async function buildTree(parent, node) {
+                let index = nameToIndex[node["name"]];
+                let children = data[index]["Prerequisites"];
+
+                for (let name of children) {
+                    node["children"].push({
+                        "name": name,
+                        "parent": node["name"],
+                        "children": []
+                    })
+                }
+
+                for (let child of node["children"]) {
+                    buildTree(node, child);
+                }
+            }
+            buildTree("null", treeData);
+            console.log(treeData);
+
+            //Tree diagram source: https://bl.ocks.org/d3noob/8375092
+            //TODO: implement tree visualization
+
         }
     </script>
 </body>
