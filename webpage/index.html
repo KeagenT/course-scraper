@@ -10,6 +10,30 @@
     <title>Shepherd University Course Visualization</title>
 </head>
 <body>
-    
+
+    <input type="text" id="field">
+    <input type="button" id="search" value="Search" onclick="loadData()">
+    <p id="courseID"></p>
+    <p id="courseName"></p>
+    <p id="courseDesc"></p>
+
+    <script>
+        async function loadData() {
+            let data = await getData();
+            console.log(data);
+
+            var field = document.getElementById("field");
+            var courseID = document.getElementById("courseID");
+            var courseName = document.getElementById("courseName");
+            var courseDesc = document.getElementById("courseDesc");
+
+            let input = field.value;
+            field.value = "";
+
+            courseID.innerHTML = "ID: " + data[input]["ID"];
+            courseName.innerHTML = "NAME: " + data[input]["Name"];
+            courseDesc.innerHTML = "DESCRIPTION: " + data[input]["Description"]
+        }
+    </script>
 </body>
 </html>
