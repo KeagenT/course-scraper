@@ -1,7 +1,7 @@
 from scrapy import Spider
 from scrapy.selector import Selector
 from scrapy import Request
-from su_catalog.items import SuCatalogItem
+from courseScraper.items import SuCatalogItem
 
 
 baseUrl = "http://catalog.shepherd.edu/content.php?catoid=16&catoid=16&navoid=2902&filter%5Bcpage%5D="
@@ -22,7 +22,7 @@ class UrlSpider(Spider):
         item = SuCatalogItem()
         course_urls = response.xpath('//td[@class="width"]//a[contains(@href, "coid")]//@href').getall()
         ajax_urls = [url_ajaxify(x) for x in course_urls]
-        item['urls'] = ajax_urls
         item['page'] = self.page
+        item['urls'] = ajax_urls
         self.page = self.page+1
         yield item
