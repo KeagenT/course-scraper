@@ -7,19 +7,34 @@
     <script type="text/javascript" src="app.js"></script>
     <!--<script src="https://d3js.org/d3.v5.min.js"></script>-->
     <link rel="stylesheet" href="styles.css">
-    <title>Shepherd University Course Visualization</title>
+    <title>SU Course Scraper/Visualizer</title>
 </head>
 <body>
+    <h1>Shepherd University Course Scraper and Prerequisite Visualizer</h1>
 
-    <input type="text" id="field">
-    <input type="button" id="search" value="Search" onclick="loadData()">
-    <p id="courseID"></p>
-    <p id="courseName"></p>
-    <p id="courseDesc"></p>
+    <div class="searchContainer" style>
+        <input type="text" id="field">
+        <input type="button" id="search" value="Search" onclick="loadData()">
+    </div>
 
+    <div id="searchResultContainer" class="searchResultContainer">
+        <p id="courseID">Sorry, that is not a course.</p>
+        <p id="courseName"></p>
+        <p id="courseDesc"></p>
+    </div>
+
+
+    <script>
+            document.getElementById("searchResultContainer")
+            .style.display = 'none';
+    </script>
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script>
+        document.getElementById("searchResultContainer")
+            .style.display = 'none';
         async function loadData() {
+            document.getElementById("searchResultContainer")
+                .style.display = '';
             //Load data
             let data = await getData();
             console.log(data);
@@ -38,9 +53,9 @@
             buildTree("null", treeData[0], data);
             console.log(treeData);
 
-            //SOURCE: http://www.d3noob.org/2014/01/tree-diagrams-in-d3js_11.html
+            //http://www.d3noob.org/2014/01/tree-diagrams-in-d3js_11.html
 
-            var margin = {top: 20, right: 120, bottom: 20, left: 120},
+            var margin = {top: 150, right: 120, bottom: 150, left: 120},
             width = 960 - margin.right - margin.left,
             height = 500 - margin.top - margin.bottom;
             
@@ -70,6 +85,7 @@
 
                 var node = svg.selectAll("g.node")
                     .data(nodes, function(d) { return d.id || (d.id = ++i); });
+
                 var nodeEnter = node.enter().append("g")
                     .attr("class", "node")
                     .attr("transform", function(d) { 
