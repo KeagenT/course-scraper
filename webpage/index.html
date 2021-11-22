@@ -23,17 +23,19 @@
         <p id="courseDesc"></p>
     </div>
 
+    <h2 id="h2">Course Prerequisites</h2>
 
-    <script>
-            document.getElementById("searchResultContainer")
-            .style.display = 'none';
-    </script>
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script>
         document.getElementById("searchResultContainer")
             .style.display = 'none';
+            document.getElementById('h2')
+                .style.display = 'none';
+
         async function loadData() {
             document.getElementById("searchResultContainer")
+                .style.display = '';
+            document.getElementById('h2')
                 .style.display = '';
             //Load data
             let data = await getData();
@@ -55,7 +57,7 @@
 
             //http://www.d3noob.org/2014/01/tree-diagrams-in-d3js_11.html
 
-            var margin = {top: 200, right: 120, bottom: 150, left: 120},
+            var margin = {top: 25, right: 120, bottom: 150, left: 120},
             width = 960 - margin.right - margin.left,
             height = 960 - margin.top - margin.bottom;
             
@@ -69,10 +71,10 @@
 
             d3.select("body").select("svg").remove(); //Remove previous svg
             var svg = d3.select("body").append("svg")
-            .attr("width", width + margin.right + margin.left)
-            .attr("height", height + margin.top + margin.bottom)
-            .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                .attr("width", width + margin.right + margin.left)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
             root = treeData[0];
             update(root);

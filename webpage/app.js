@@ -42,7 +42,7 @@ function displayCourse(course) {
     var courseDesc = document.getElementById("courseDesc");
     courseID.innerHTML = "ID: " + course["ID"];
     courseName.innerHTML = "NAME: " + course["Name"];
-    courseDesc.innerHTML = "DESCRIPTION: " + course["Description"];
+    courseDesc.innerHTML = "DESC: " + course["Description"];
 }
 
 function getSearch() {
