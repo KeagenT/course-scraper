@@ -24,51 +24,18 @@
             let data = await getData();
             console.log(data);
 
-            //Basic html stuff
-            var field = document.getElementById("field");
-            var courseID = document.getElementById("courseID");
-            var courseName = document.getElementById("courseName");
-            var courseDesc = document.getElementById("courseDesc");
-
-            //Build name to index dict
-            var nameToIndex = {}
-            let n = 0;
-            for (let course of data) {
-                nameToIndex[course["ID"]] = n;
-                n++;
-            }
-
             //TODO: implement typeahead
-            let index = nameToIndex[field.value];
-            field.value = "";
-
-            courseID.innerHTML = "ID: " + data[index]["ID"];
-            courseName.innerHTML = "NAME: " + data[index]["Name"];
-            courseDesc.innerHTML = "DESCRIPTION: " + data[index]["Description"]
+            let search = getSearch();
+            let course = getCourse(search, data);
+            displayCourse(course);
 
             //Convert data to tree data for visualization
             var treeData = [{
-                "name": data[index]["ID"],
+                "name": course["ID"],
                 "parent": "null",
                 "children": []
             }];
-            function buildTree(parent, node) {
-                let index = nameToIndex[node["name"]];
-                let children = data[index]["Prerequisites"];
-
-                for (let name of children) {
-                    node["children"].push({
-                        "name": name,
-                        "parent": node["name"],
-                        "children": []
-                    })
-                }
-
-                for (let child of node["children"]) {
-                    buildTree(node, child);
-                }
-            }
-            buildTree("null", treeData[0]);
+            buildTree("null", treeData[0], data);
             console.log(treeData);
 
             //SOURCE: http://www.d3noob.org/2014/01/tree-diagrams-in-d3js_11.html
