@@ -16,7 +16,6 @@ class SuCourseItem(scrapy.Item):
     name = Field()
     description = Field()
     prerequisites = Field()
-    #url = Field()
     pass
 
 

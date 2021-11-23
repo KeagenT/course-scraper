@@ -48,7 +48,6 @@ class CourseSpider(Spider):
         dirty_title = response.xpath(".//div[h3]//h3/text()").getall()[0]
         def clean_description(dirty_description, has_prereq):
             if has_prereq:
-                #clean_description = dirty_description.split(has_prereq.group(0))[0].decode('unicode-escape')
                 clean_description = re.split(self.REQUISITE, dirty_description)[0]
                 clean_description = clean_description.strip()
                 clean_description = clean_description.encode("unicode-escape").decode("unicode-escape")
@@ -76,5 +75,4 @@ class CourseSpider(Spider):
         item['name'] = clean_title(dirty_title)[1]
         item['description'] = clean_description(dirty_description, has_prereq)
         item['prerequisites'] = clean_prereqs( has_prereq)
-        #item['url'] = response.request.url
         yield item
