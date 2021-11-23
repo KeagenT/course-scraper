@@ -4,9 +4,19 @@
 # https://docs.scrapy.org/en/latest/topics/items.html
 
 import scrapy
+from scrapy.item import Item, Field
 
-
-class CoursescraperItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
+class SuCatalogItem(scrapy.Item):
+    page = Field()
+    urls = Field()
     pass
+
+class SuCourseItem(scrapy.Item):
+    id = Field()
+    name = Field()
+    description = Field()
+    prerequisites = Field()
+    pass
+
+
+
