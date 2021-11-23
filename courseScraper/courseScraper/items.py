@@ -11,11 +11,12 @@ class SuCatalogItem(scrapy.Item):
     urls = Field()
     pass
 
-class SuCourse(scrapy.Item):
+class SuCourseItem(scrapy.Item):
     id = Field()
     name = Field()
     description = Field()
     prerequisites = Field()
+    #url = Field()
     pass
 
 
