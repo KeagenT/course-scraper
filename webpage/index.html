@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="app.js"></script>
+    <!--<script src="https://d3js.org/d3.v5.min.js"></script>-->
+    <link rel="stylesheet" href="styles.css">
+    <title>SU Course Scraper/Visualizer</title>
+</head>
+<body>
+    <h1>Shepherd University Course Scraper and Prerequisite Visualizer</h1>
+
+    <div class="searchContainer" style>
+        <input type="text" id="field">
+        <input type="button" id="search" value="Search" onclick="loadData()">
+    </div>
+
+    <div id="searchResultContainer" class="searchResultContainer">
+        <p id="courseID">Sorry, that is not a course.</p>
+        <p id="courseName"></p>
+        <p id="courseDesc"></p>
+    </div>
+
+    <h2 id="h2">Course Prerequisites</h2>
+
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script>
+        document.getElementById("searchResultContainer")
+            .style.display = 'none';
+            document.getElementById('h2')
+                .style.display = 'none';
+
+        async function loadData() {
+            document.getElementById("searchResultContainer")
+                .style.display = '';
+            document.getElementById('h2')
+                .style.display = '';
+            //Load data
+            let data = await getData();
+            console.log(data);
+
+            //TODO: implement typeahead
+            let search = getSearch();
+            let course = getCourse(search, data);
+            displayCourse(course);
+
+            //Convert data to tree data for visualization
+            var treeData = [{
+                "name": course["ID"],
+                "parent": "null",
+                "children": []
+            }];
+            buildTree("null", treeData[0], data);
+            console.log(treeData);
+
+            //http://www.d3noob.org/2014/01/tree-diagrams-in-d3js_11.html
+
+            var margin = {top: 25, right: 120, bottom: 150, left: 120},
+            width = 960 - margin.right - margin.left,
+            height = 960 - margin.top - margin.bottom;
+            
+            var i = 0;
+
+            var tree = d3.layout.tree()
+                .size([height, width]);
+
+            var diagonal = d3.svg.diagonal()
+                .projection(function(d) { return [d.x, d.y]; });
+
+            d3.select("body").select("svg").remove(); //Remove previous svg
+            var svg = d3.select("body").append("svg")
+                .attr("width", width + margin.right + margin.left)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+            root = treeData[0];
+            update(root);
+
+            function update(source) {
+                var nodes = tree.nodes(root).reverse(),
+                links = tree.links(nodes);
+
+                nodes.forEach(function(d) { d.y = d.depth * 180; });
+
+                var node = svg.selectAll("g.node")
+                    .data(nodes, function(d) { return d.id || (d.id = ++i); });
+
+                var nodeEnter = node.enter().append("g")
+                    .attr("class", "node")
+                    .attr("transform", function(d) { 
+                    return "translate(" + d.x + "," + d.y + ")"; });
+
+                nodeEnter.append("circle")
+                    .attr("r", 10)
+                    .style("fill", "#fff");
+
+                nodeEnter.append("text")
+                    .attr("x", function(d) { 
+                    return d.children || d._children ? -13 : 13; })
+                    .attr("dy", ".35em")
+                    .attr("text-anchor", function(d) { 
+                    return d.children || d._children ? "end" : "start"; })
+                    .text(function(d) { return d.name; })
+                    .style("fill-opacity", 1);
+
+                var link = svg.selectAll("path.link")
+                    .data(links, function(d) { return d.target.id; });
+                link.enter().insert("path", "g")
+                    .attr("class", "link")
+                    .attr("d", diagonal);
+            }
+        }
+    </script>
+</body>
+</html>

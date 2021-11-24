@@ -1,0 +1,50 @@
+[
+    {
+        "ID": "CLASS 001",
+        "Name": "A",
+        "Description": "A description",
+        "Prerequisites": ["CLASS 002", "CLASS 005"]
+    },
+    {
+        "ID": "CLASS 002",
+        "Name": "B",
+        "Description": "B description",
+        "Prerequisites": []
+    },
+    {
+        "ID": "CLASS 003",
+        "Name": "C",
+        "Description": "C description",
+        "Prerequisites": ["CLASS 001", "CLASS 004"]
+    },
+    {
+        "ID": "CLASS 004",
+        "Name": "D",
+        "Description": "D description",
+        "Prerequisites": ["CLASS 006", "CLASS 007", "CLASS 008"]
+    },
+    {
+        "ID": "CLASS 005",
+        "Name": "E",
+        "Description": "E description",
+        "Prerequisites": []
+    },
+    {
+        "ID": "CLASS 006",
+        "Name": "F",
+        "Description": "F description",
+        "Prerequisites": ["CLASS 005"]
+    },
+    {
+        "ID": "CLASS 007",
+        "Name": "G",
+        "Description": "G description",
+        "Prerequisites": []
+    },
+    {
+        "ID": "CLASS 008",
+        "Name": "H",
+        "Description": "H description",
+        "Prerequisites": []
+    }
+]

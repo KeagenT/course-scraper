@@ -1,0 +1,57 @@
+body {
+  background-color: aliceblue;
+}
+
+.node circle {
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 4px;
+}
+
+.node text {
+  font: 13px sans-serif bold;
+}
+
+.link {
+  fill: none;
+  stroke: blue;
+  stroke-width: 2px;
+}
+
+h1 {
+  text-align: center;
+}
+
+h2 {
+  text-align: center;
+  margin-top: 175px;
+  text-decoration: underline;
+}
+
+.searchContainer {
+  display: flex;
+  justify-content: center;
+}
+
+#field {
+  width: 160px;
+}
+
+.searchResultContainer {
+  border: 10px, 10px, 10px, 10px;
+  border-radius: 2%;
+  border-color: steelblue;
+  border-style: solid;
+  padding: 8px;
+  margin-top: 15px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+}
+
+svg {
+  display: block;
+  margin: auto;
+  text-align: center;
+}
