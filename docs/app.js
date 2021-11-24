@@ -1,5 +1,5 @@
 //const FilePath = "./testData.json"; //TODO: change to real path
-const FilePath = "../data/Courses.json";
+const FilePath = "./data/Courses.json";
 
 var nameToIndex = {};
 
