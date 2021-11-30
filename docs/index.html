@@ -5,25 +5,35 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript" src="app.js"></script>
-    <!--<script src="https://d3js.org/d3.v5.min.js"></script>-->
     <link rel="stylesheet" href="styles.css">
     <title>SU Course Scraper/Visualizer</title>
 </head>
 <body>
-    <h1>Shepherd University Course Scraper and Prerequisite Visualizer</h1>
+    <h1 class="pop-style">Shepherd University Course Prerequisite Visualizer</h1>
 
-    <div class="searchContainer" style>
-        <input type="text" id="field">
-        <input type="button" id="search" value="Search" onclick="loadData()">
+    <div class="flex-container">
+        <div class="searchContainer" style>
+            <div class = "search-container">
+                <input type="text" id="field" class = "text-input">
+            </div>
+            <input type="button" id="search" class="search-button" value="Search" onclick="loadData()">
+        </div>
     </div>
 
-    <div id="searchResultContainer" class="searchResultContainer">
-        <p id="courseID">Sorry, that is not a course.</p>
-        <p id="courseName"></p>
-        <p id="courseDesc"></p>
+    <div class = "flex-container">
+        <div id="searchResultContainer" class="searchResultContainer card">
+            <h2 id="courseName" class="card-text" >Sorry that is not a course</h2>
+            <p id="courseDesc" class="card-text"></p>
+        </div>
     </div>
 
-    <h2 id="h2">Course Prerequisites</h2>
+    <!--
+    <div class = "flex-container">
+        <div id= "coursesViz"></div>
+    </div>
+    -->
+
+    <h2 id="h2" class = "prerequisites pop-style">Course Prerequisites</h2>
 
     <script src="https://d3js.org/d3.v3.min.js"></script>
     <script>
@@ -52,14 +62,14 @@
                 "parent": "null",
                 "children": []
             }];
-            buildTree("null", treeData[0], data);
+            buildUniqueTree("null", treeData[0], data);
             console.log(treeData);
 
             //http://www.d3noob.org/2014/01/tree-diagrams-in-d3js_11.html
 
-            var margin = {top: 25, right: 0, bottom: 0, left: 0},
-            width = 3000 - margin.right - margin.left,
-            height = 3000 - margin.top - margin.bottom;
+            var margin = {top: 0, right: 0, bottom: 0, left: 0},
+            width = 2000 - margin.right - margin.left,
+            height = 2000 - margin.top - margin.bottom;
             
             var i = 0;
 
@@ -71,8 +81,7 @@
 
             d3.select("body").select("svg").remove(); //Remove previous svg
             var svg = d3.select("body").append("svg")
-                .attr("width", width + margin.right + margin.left)
-                .attr("height", height + margin.top + margin.bottom)
+                .attr("viewBox", `0 0 ${width} ${height}`)
                 .append("g")
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -83,7 +92,11 @@
                 var nodes = tree.nodes(root).reverse(),
                 links = tree.links(nodes);
 
-                nodes.forEach(function(d) { d.y = d.depth * 180; });
+                nodes.forEach(function(d) {
+                    depth = d.depth + 1;
+                    d.y = depth * 90;
+
+                });
 
                 var node = svg.selectAll("g.node")
                     .data(nodes, function(d) { return d.id || (d.id = ++i); });
@@ -94,17 +107,15 @@
                     return "translate(" + d.x + "," + d.y + ")"; });
 
                 nodeEnter.append("circle")
-                    .attr("r", 10)
-                    .style("fill", "#fff");
+                    .attr("r", 20);
 
                 nodeEnter.append("text")
                     .attr("x", function(d) { 
                     return d.children || d._children ? -13 : 13; })
-                    .attr("dy", ".35em")
+                    .attr("dy", ".5em")
                     .attr("text-anchor", function(d) { 
                     return d.children || d._children ? "end" : "start"; })
                     .text(function(d) { return d.name; })
-                    .style("fill-opacity", 1);
 
                 var link = svg.selectAll("path.link")
                     .data(links, function(d) { return d.target.id; });

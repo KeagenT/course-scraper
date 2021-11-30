@@ -39,13 +39,38 @@ function buildTree(parent, node, data) {
     }
 }
 
+function buildUniqueTree(parent, node, data, uniqueCoursesArr=[]){
+
+
+    function buildTree(parent, node, data) {
+        let index = nameToIndex[node["name"]];
+        if (typeof index !== 'undefined') { //Filter out non-course pre-reqs
+            let children = data[index]["prerequisites"];
+    
+            for (let name of children) {
+                node["children"].push({
+                    "name": name,
+                    "parent": node["name"],
+                    "children": []
+                })
+            }
+        
+            for (let child of node["children"]) {
+                if(!uniqueCoursesArr.includes(child["name"])){
+                    uniqueCoursesArr.push(child["name"])
+                    buildTree(node, child, data);
+                }
+            }
+        }
+    }
+    buildTree(parent, node, data);
+}
+
 function displayCourse(course) {
-    var courseID = document.getElementById("courseID");
     var courseName = document.getElementById("courseName");
     var courseDesc = document.getElementById("courseDesc");
-    courseID.innerHTML = "ID: " + course["id"];
-    courseName.innerHTML = "NAME: " + course["name"];
-    courseDesc.innerHTML = "DESC: " + course["description"];
+    courseName.innerHTML = `${course["id"]} - ${course["name"]}`;
+    courseDesc.innerHTML = `${course["description"]}`;
 }
 
 function getSearch() {

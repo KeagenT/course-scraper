@@ -1,29 +1,48 @@
+:root {
+  --responsive-width: 600px;
+}
+
 body {
-  background-color: aliceblue;
+  background-color: #e84949;
+  background-image: linear-gradient(62deg, #e84949 0%, #f0c042 100%);
 }
 
 .node circle {
-  fill: #fff;
-  stroke: steelblue;
-  stroke-width: 4px;
+  fill: rgb(245, 57, 57);
+  filter:drop-shadow( 0 0 .25rem rgba(0,0,0, .2));
 }
 
 .node text {
-  font: 12px sans-serif bold;
+  font-family: sans-serif;
+  font-weight: 700;
+  font-size: 1.25rem;
+  fill: rgb(255, 255, 255);
+  filter:drop-shadow( 2px 1px 0 rgb(0, 0, 0));
   transform: rotate(15deg);
 }
 
 .link {
   fill: none;
-  stroke: blue;
-  stroke-width: 2px;
+  stroke: rgb(8, 3, 3);
+  stroke-width: 4px;
 }
 
 h1 {
   text-align: center;
 }
 
-h2 {
+.card-text {
+  font-family: Verdana, Tahoma, sans-serif;
+  color: rgb(56, 43, 43);
+}
+
+.pop-style {
+  font-family: Verdana, Tahoma, sans-serif;
+  color: white;
+  filter:drop-shadow( 2px 2px 0 rgb(255, 75, 75));
+}
+
+h2.prerequisites {
   text-align: center;
   margin-top: 10px;
   text-decoration: underline;
@@ -31,28 +50,110 @@ h2 {
 
 .searchContainer {
   display: flex;
-  justify-content: center;
+  position: relative;
+  width: var(--responsive-width);
+}
+.search-button {
+  text-decoration: none;
+  border: none;
+  border-radius: 1rem;
+  width: 4rem;
+  height: 18px;
+  background-color: rgb(255, 75, 75);
+  color: white;
+  position: absolute;
+  right: 2px;
+  top: 2px;
+}
+#field {
+  width: 98%;
+  height: 10px;
+  text-align: start;
+  border: none;
+  padding: 2px;
+  appearance: none;
 }
 
-#field {
-  width: 160px;
+#field:focus {
+  outline: none;
+}
+
+.search-container {
+  padding-left: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: white;
+  height: 22px;
+  border-radius: 1rem;
+  width: var(--responsive-width);
 }
 
 .searchResultContainer {
-  border: 10px, 10px, 10px, 10px;
-  border-radius: 2%;
-  border-color: steelblue;
-  border-style: solid;
-  padding: 8px;
-  margin-top: 15px;
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 300px;
+  padding: 2rem 4rem;
+  margin-top: 1rem;
+  max-width: var(--responsive-width);
+}
+
+.card {
+  border-radius: 20px;
+  padding: 2rem;
+  background: rgb(255, 245, 245);
+  box-shadow: .5rem .5rem 1rem rgba(0,0,0, .1);
+}
+
+.searchResultContainer  #courseName {
+  font-size: 1.25rem;
+}
+
+.searchResultContainer  #courseDesc {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  max-height: 150px;
+  max-width: 100%;
+  overflow: auto;
 }
 
 svg {
   display: block;
   margin: auto;
   text-align: center;
+  overflow: auto;
+}
+
+.flex-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 1200px){
+  :root {
+    --responsive-width: 400px;
+  }
+  .searchResultContainer{
+    max-width: var(--responsive-width);
+  }
+  .node text {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 700px){
+  .node text {
+    font-size: 3rem;
+  }
+}
+
+@media (max-width: 450px){
+  :root {
+    --responsive-width: 200px;
+  }
+  .searchResultContainer{
+    max-width: var(--responsive-width);
+    padding: 3rem;
+  }
+  .node text {
+    font-size: 4rem;
+  }
 }
