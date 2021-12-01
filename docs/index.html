@@ -11,16 +11,21 @@
 <body>
     <h1 class="pop-style">Shepherd University Course Prerequisite Visualizer</h1>
 
-    <div class="flex-container">
-        <div class="searchContainer" style>
-            <div class = "search-container">
-                <input type="text" id="field" class = "text-input">
+    <div class = "centered-wrapper">
+        <div class="search-flex-wrapper">
+            <div class="searchContainer" style>
+                <div class = "search-container">
+                    <input type="text" id="field" class = "text-input card-text">
+                </div>
+                <input type="button" id="search" class="search-button" value="Search" onclick="loadData()">
             </div>
-            <input type="button" id="search" class="search-button" value="Search" onclick="loadData()">
+            <ul class = "course-suggestions">
+                <li class = "card-text muted">Search for a course e.g. CIS 321</li>
+            </ul>
         </div>
     </div>
 
-    <div class = "flex-container">
+    <div class = "centered-wrapper">
         <div id="searchResultContainer" class="searchResultContainer card">
             <h2 id="courseName" class="card-text" >Sorry that is not a course</h2>
             <p id="courseDesc" class="card-text"></p>
@@ -42,14 +47,62 @@
             document.getElementById('h2')
                 .style.display = 'none';
 
+        const searchInput = document.getElementById('field');
+        const suggestedCourses = document.querySelector('.course-suggestions');
+        
+        function onSuggestionClick(e){
+            let clickedCourseText = e.target.innerText;
+            let courseID = clickedCourseText.split(' - ')[0];
+            let field = document.getElementById("field");
+            field.value = courseID;
+            loadData();
+        }
+
+        async function getResults(e) {
+            let typeahead = e.target.value;
+            let data = await getData();
+            let matches = getMatches(typeahead, data);
+        }
+
+        async function displaySuggestions(e) {
+            let typeahead = e.target.value;
+            let data = await getData();
+            let matches = getMatches(typeahead, data);
+            matches = matches.slice(0,5);
+            const coursesHTML = matches.map( course => {
+                return `<li class = "card-text">${course["id"]} - ${course["name"]}</li>`;
+            }).join("");
+            suggestedCourses.innerHTML = coursesHTML;
+            document.querySelectorAll('li.card-text').forEach( (suggestion) => {
+                suggestion.addEventListener('click', onSuggestionClick);
+                suggestion.addEventListener('tap', onSuggestionClick);
+            });
+        }
+
+        function clearVectors(){
+            d3.select("body").select("svg").remove();
+        }
+
+        async function onSearch(e){
+            displaySuggestions(e);
+            showSearch();
+            hideResults();
+            clearVectors();
+        }
+
+
+        searchInput.addEventListener('change', onSearch);
+        searchInput.addEventListener('keyup', onSearch);
+
+
         async function loadData() {
-            document.getElementById("searchResultContainer")
-                .style.display = '';
-            document.getElementById('h2')
-                .style.display = '';
+
+            showResults();
+            hideSearch();
+            
+            //suggestedCourses.style.display = 'none';
             //Load data
             let data = await getData();
-            console.log(data);
 
             //TODO: implement typeahead
             let search = getSearch();
@@ -79,7 +132,7 @@
             var diagonal = d3.svg.diagonal()
                 .projection(function(d) { return [d.x, d.y]; });
 
-            d3.select("body").select("svg").remove(); //Remove previous svg
+            clearVectors();
             var svg = d3.select("body").append("svg")
                 .attr("viewBox", `0 0 ${width} ${height}`)
                 .append("g")

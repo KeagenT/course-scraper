@@ -83,3 +83,34 @@ function getSearch() {
 function getCourse(search, data) {
     return data[nameToIndex[search]];
 }
+
+function getMatches(search, courses) {
+    return courses.filter( course => {
+        const regex = new RegExp(search, 'gi');
+        return course.id.match(regex) || course.name.match(regex);
+    });
+}
+
+function hideSearch(){
+    const suggestedCourses = document.getElementsByClassName('course-suggestions')[0];
+    suggestedCourses.style.display = 'none';
+};
+
+function hideResults(){
+    document.getElementById("searchResultContainer")
+        .style.display = 'none';
+    document.getElementById('h2')
+        .style.display = 'none';
+}
+
+function showSearch() {
+    const suggestedCourses = document.getElementsByClassName('course-suggestions')[0];
+    suggestedCourses.style.display = '';
+}
+
+function showResults(){
+    document.getElementById("searchResultContainer")
+        .style.display = '';
+    document.getElementById('h2')
+        .style.display = '';
+}
