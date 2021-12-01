@@ -67,11 +67,14 @@ h2.prerequisites {
 }
 #field {
   width: 98%;
-  height: 10px;
+  height: 12px;
+  font-size: .75rem;
+  font-weight: bold;
   text-align: start;
   border: none;
   padding: 2px;
   appearance: none;
+  margin-right: 2px;
 }
 
 #field:focus {
@@ -79,10 +82,9 @@ h2.prerequisites {
 }
 
 .search-container {
-  padding-left: 1rem;
   display: flex;
-  justify-content: center;
   align-items: center;
+  padding-left: 1rem;
   background: white;
   height: 22px;
   border-radius: 1rem;
@@ -121,12 +123,46 @@ svg {
   overflow: auto;
 }
 
-.flex-container {
+.centered-wrapper {
   width: 100%;
   display: flex;
   justify-content: center;
 }
 
+.search-flex-wrapper {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.course-suggestions {
+  margin: 0;
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem 0 1rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: var(--responsive-width);
+  position: absolute;
+  z-index: -1;
+  top: 0;
+}
+
+.course-suggestions > li {
+  width: 94%;
+  font-weight: bold;
+  display: block;
+  padding: .5rem 0;
+  border-bottom: solid 1px rgba(0, 0, 0, 0.1);
+  font-size: .75rem;
+  cursor: pointer;
+}
+
+
+.muted {
+  color: slategray;
+}
 @media (max-width: 1200px){
   :root {
     --responsive-width: 400px;
@@ -136,6 +172,10 @@ svg {
   }
   .node text {
     font-size: 2.5rem;
+  }
+
+  .course-suggestions > li {
+    width: 91%;
   }
 }
 
@@ -155,5 +195,9 @@ svg {
   }
   .node text {
     font-size: 4rem;
+  }
+
+  .course-suggestions > li {
+    width: 82%;
   }
 }
